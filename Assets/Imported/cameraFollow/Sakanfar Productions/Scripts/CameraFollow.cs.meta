@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f5e8ffb1310baf44ea32ca749817aef5
+AssetOrigin:
+  serializedVersion: 1
+  productId: 320837
+  packageName: First Person Camera Script
+  packageVersion: 1.0.0
+  assetPath: Assets/cameraFollow/Sakanfar Productions/Scripts/CameraFollow.cs
+  uploadId: 761037
