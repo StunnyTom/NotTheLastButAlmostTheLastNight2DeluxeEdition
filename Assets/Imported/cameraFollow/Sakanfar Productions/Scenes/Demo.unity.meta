@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 317cd737fca5d1547afbb430e72dfc87
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 320837
+  packageName: First Person Camera Script
+  packageVersion: 1.0.0
+  assetPath: Assets/cameraFollow/Sakanfar Productions/Scenes/Demo.unity
+  uploadId: 761037
