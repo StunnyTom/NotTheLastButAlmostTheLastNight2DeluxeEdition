@@ -3,4 +3,7 @@
 *.png filter=lfs diff=lfs merge=lfs -text
 *.exr filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
+<<<<<<< HEAD
 *.fbx filter=lfs diff=lfs merge=lfs -text
+=======
+>>>>>>> aa92d7a42daa8c48564d571d706ab82ef801c640
