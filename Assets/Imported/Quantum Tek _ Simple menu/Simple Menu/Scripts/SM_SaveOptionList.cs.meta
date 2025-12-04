@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 58aa0066a5ed04922ab6472222247c6f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154642
+  packageName: Simple Menu
+  packageVersion: 1.0
+  assetPath: Assets/Quantum Tek/Simple Menu/Scripts/SM_SaveOptionList.cs
+  uploadId: 331199
