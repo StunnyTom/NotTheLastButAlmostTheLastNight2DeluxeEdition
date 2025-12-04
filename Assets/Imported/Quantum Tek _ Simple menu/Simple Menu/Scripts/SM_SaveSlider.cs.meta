@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 056164d8aaad34ba4859aab5ac658691
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154642
+  packageName: Simple Menu
+  packageVersion: 1.0
+  assetPath: Assets/Quantum Tek/Simple Menu/Scripts/SM_SaveSlider.cs
+  uploadId: 331199

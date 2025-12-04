@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 115939ae9414541fe91d9f53e7307f24
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154642
+  packageName: Simple Menu
+  packageVersion: 1.0
+  assetPath: Assets/Quantum Tek/Simple Menu/Scripts/SM_Tab.cs
+  uploadId: 331199
