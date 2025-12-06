@@ -38,6 +38,10 @@ namespace MonsterSystem
         public float thirdPersonHeight = 2f;
         private bool isFirstPerson = true; // Toggle between FP and TP
 
+        [Header("First Person View")]
+        public SkinnedMeshRenderer monsterMeshRenderer; // or survivorMeshRenderer
+        public bool hideBodyInFirstPerson = true;
+
         // Components
         private CharacterController characterController;
         private Camera cam;
@@ -255,13 +259,19 @@ namespace MonsterSystem
                 if (isFirstPerson)
                 {
                     // First person camera
+                    if (hideBodyInFirstPerson && monsterMeshRenderer != null)
+                    {
+                        monsterMeshRenderer.enabled = false; // Hide in FP
+                    }
                     playerCamera.gameObject.SetActive(true);
                     if (thirdPersonCamera != null)
                         thirdPersonCamera.gameObject.SetActive(false);
                 }
+                
                 else
                 {
                     // Third person camera
+                    monsterMeshRenderer.enabled = true;
                     playerCamera.gameObject.SetActive(false);
                     if (thirdPersonCamera != null)
                     {
