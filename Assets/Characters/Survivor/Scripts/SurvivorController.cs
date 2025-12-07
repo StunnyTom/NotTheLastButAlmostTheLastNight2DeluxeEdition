@@ -1,5 +1,10 @@
 using UnityEngine;
 
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+using UnityEngine.InputSystem;
+#endif
+
+
 namespace SurvivorSystem
 {
     /// <summary>
@@ -76,13 +81,27 @@ namespace SurvivorSystem
         }
 
         void Update()
-        {
-            CheckGrounded();
-            HandleLook();
-            HandleMovement();
-            UpdateAnimations();
-            HandleCameraToggle();
-        }
+            {
+                CheckGrounded();
+                HandleLook();
+                HandleMovement();
+                UpdateAnimations();
+                HandleCameraToggle();
+
+                HandleInteraction();
+            }
+
+        void HandleInteraction()
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                    TryPickItem();
+
+                if (Input.GetMouseButtonDown(0))
+                    HandleItemUse();
+
+                if (Input.GetKeyDown(KeyCode.G))
+                    DropSelectedItem();
+            }
 
         void UpdateAnimations()
         {
@@ -236,5 +255,62 @@ namespace SurvivorSystem
         public bool IsSprinting => isSprinting;
         public bool IsCrouching => isCrouching;
         public Vector2 GetMoveInput => moveInput;
+    
+
+        private void TryPickItem()
+        {
+            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+            {
+                // Vérifie le tag "Usable"
+                if (!hit.collider.CompareTag("Usable")) return;
+
+                UsableItem item = hit.collider.GetComponent<UsableItem>();
+                if (item != null)
+                {
+                    if (Inventory.Instance.AddItem(item))
+                    {
+                        Debug.Log("Item picked: " + item.itemName);
+                        // On désactive l'objet dans la scène
+                        item.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+
+        private void HandleItemUse()
+        {
+            bool usePressed = false;
+
+        #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            if (Mouse.current != null)
+                usePressed = Mouse.current.leftButton.wasPressedThisFrame;
+        #else
+            usePressed = Input.GetMouseButtonDown(0);
+        #endif
+
+            if (!usePressed)
+                return;
+
+            UsableItem item = Inventory.Instance.GetSelectedItem();
+            if (item == null) return;
+
+            item.Use();
+        }
+
+
+        private void DropSelectedItem()
+        {
+            UsableItem item = Inventory.Instance.GetSelectedItem();
+            if (item == null) return;
+
+            // On remet l’objet devant le joueur
+            item.transform.position = transform.position + transform.forward * 1f;
+            item.gameObject.SetActive(true);
+
+            Inventory.Instance.RemoveSelectedItem();
+        }
     }
+
 }
