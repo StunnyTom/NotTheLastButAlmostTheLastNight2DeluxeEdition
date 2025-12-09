@@ -15,12 +15,13 @@ public class Inventory : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public bool AddItem(UsableItem item)
+    public int AddItem(UsableItem item)
     {
-        if (items.Count >= maxItems) return false;
+        if (items.Count >= maxItems) return -1;
         items.Add(item);
         selectedIndex = items.Count - 1;
-        return true;
+        Debug.Log("Added item: " + item.itemName);
+        return selectedIndex;
     }
 
     public void RemoveSelectedItem()

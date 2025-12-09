@@ -43,9 +43,13 @@ namespace SurvivorSystem
         public SkinnedMeshRenderer survivorMeshRenderer;
         public bool hideBodyInFirstPerson = true;
 
+        [Header("Inventory")]
+        public Inventory playerInventory;
+        public Transform objectHandler;
+
         // Components
         private CharacterController characterController;
-        private Camera cam;
+        private Camera cam; 
 
         // Movement
         private Vector3 moveDirection = Vector3.zero;
@@ -62,6 +66,14 @@ namespace SurvivorSystem
         // Control flags
         private bool isLookEnabled = true;
         private bool isMoveEnabled = true;
+        private OutlineTarget currentOutlined;
+
+        // Safely get an inventory reference (serialized field preferred, fallback to singleton)
+        private Inventory GetInventory()
+        {
+            if (playerInventory != null) return playerInventory;
+            return Inventory.Instance;
+        }
 
         void Awake()
         {
@@ -89,19 +101,47 @@ namespace SurvivorSystem
                 HandleCameraToggle();
 
                 HandleInteraction();
+                HandleOutlineRaycast();
             }
 
         void HandleInteraction()
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                    TryPickItem();
+        {
+            // Pick item
+            bool pickPressed = false;
+        #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            if (Keyboard.current != null)
+            pickPressed = Keyboard.current.eKey.wasPressedThisFrame;
+        #else
+            pickPressed = Input.GetKeyDown(KeyCode.E);
+        #endif
 
-                if (Input.GetMouseButtonDown(0))
-                    HandleItemUse();
+            if (pickPressed)
+            TryPickItem();
 
-                if (Input.GetKeyDown(KeyCode.G))
-                    DropSelectedItem();
-            }
+            // Use item
+            bool usePressed = false;
+        #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            if (Mouse.current != null)
+            usePressed = Mouse.current.leftButton.wasPressedThisFrame;
+        #else
+            usePressed = Input.GetMouseButtonDown(0);
+        #endif
+
+            if (usePressed)
+            HandleItemUse();
+
+            // Drop item
+            bool dropPressed = false;
+        #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            if (Keyboard.current != null)
+            dropPressed = Keyboard.current.qKey.wasPressedThisFrame;
+        #else
+            dropPressed = Input.GetKeyDown(KeyCode.Q);
+        #endif
+
+            if (dropPressed)
+            DropSelectedItem();
+        }
 
         void UpdateAnimations()
         {
@@ -263,21 +303,43 @@ namespace SurvivorSystem
 
             if (Physics.Raycast(ray, out RaycastHit hit, 2f))
             {
-                // Vérifie le tag "Usable"
                 if (!hit.collider.CompareTag("Usable")) return;
 
                 UsableItem item = hit.collider.GetComponent<UsableItem>();
                 if (item != null)
                 {
-                    if (Inventory.Instance.AddItem(item))
+                    Inventory inv = GetInventory();
+                    if (inv == null)
+                    {
+                        Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
+                        return;
+                    }
+
+                    int slotIndex = inv.AddItem(item);
+                    if (slotIndex != -1)
                     {
                         Debug.Log("Item picked: " + item.itemName);
-                        // On désactive l'objet dans la scène
-                        item.gameObject.SetActive(false);
+
+                        bool placedInSlot = false;
+
+                        if (objectHandler != null)
+                        {
+                            // Placer l'objet dans la main du joueur
+                            item.transform.SetParent(objectHandler);
+                            item.transform.localPosition = Vector3.zero;
+                            item.transform.localRotation = Quaternion.identity;
+                            item.gameObject.SetActive(true); 
+                            placedInSlot = true;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Inventaire plein, impossible de ramasser l'objet : " + item.itemName);
                     }
                 }
             }
         }
+
 
         private void HandleItemUse()
         {
@@ -293,7 +355,14 @@ namespace SurvivorSystem
             if (!usePressed)
                 return;
 
-            UsableItem item = Inventory.Instance.GetSelectedItem();
+            Inventory inv = GetInventory();
+            if (inv == null)
+            {
+                Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
+                return;
+            }
+
+            UsableItem item = inv.GetSelectedItem();
             if (item == null) return;
 
             item.Use();
@@ -302,14 +371,51 @@ namespace SurvivorSystem
 
         private void DropSelectedItem()
         {
-            UsableItem item = Inventory.Instance.GetSelectedItem();
+            Inventory inv = GetInventory();
+            if (inv == null)
+            {
+                Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
+                return;
+            }
+
+            UsableItem item = inv.GetSelectedItem();
             if (item == null) return;
 
-            // On remet l’objet devant le joueur
+            // On remet l'objet devant le joueur
             item.transform.position = transform.position + transform.forward * 1f;
             item.gameObject.SetActive(true);
+            item.transform.SetParent(null);
 
-            Inventory.Instance.RemoveSelectedItem();
+            inv.RemoveSelectedItem();
+        }
+
+        void HandleOutlineRaycast()
+        {
+            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 3f))
+            {
+                OutlineTarget target = hit.collider.GetComponent<OutlineTarget>();
+
+                if (target != null)
+                {
+                    // Désactive l'ancien
+                    if (currentOutlined != null && currentOutlined != target)
+                        currentOutlined.SetOutlined(false);
+
+                    // Active le nouveau
+                    currentOutlined = target;
+                    currentOutlined.SetOutlined(true);
+                    return;
+                }
+            }
+
+            // Rien visé
+            if (currentOutlined != null)
+            {
+                currentOutlined.SetOutlined(false);
+                currentOutlined = null;
+            }
         }
     }
 
