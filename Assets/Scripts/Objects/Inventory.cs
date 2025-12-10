@@ -19,9 +19,9 @@ public class Inventory : MonoBehaviour
     {
         if (items.Count >= maxItems) return -1;
         items.Add(item);
-        selectedIndex = items.Count - 1;
         Debug.Log("Added item: " + item.itemName);
-        return selectedIndex;
+        // Ne pas modifier l'item sélectionné actuel
+        return items.Count - 1;
     }
 
     public void RemoveSelectedItem()
@@ -34,6 +34,20 @@ public class Inventory : MonoBehaviour
     public UsableItem GetSelectedItem()
     {
         if (items.Count == 0) return null;
+        return items[selectedIndex];
+    }
+
+    public UsableItem NextItem()
+    {
+        if (items.Count == 0) return null;
+        selectedIndex = (selectedIndex + 1) % items.Count;
+        return items[selectedIndex];
+    }
+
+    public UsableItem PreviousItem()
+    {
+        if (items.Count == 0) return null;
+        selectedIndex = (selectedIndex - 1 + items.Count) % items.Count;
         return items[selectedIndex];
     }
 }

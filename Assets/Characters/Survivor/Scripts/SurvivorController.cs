@@ -68,6 +68,10 @@ namespace SurvivorSystem
         private bool isMoveEnabled = true;
         private OutlineTarget currentOutlined;
 
+        // Inventory helper
+        private bool objectInHand = false;
+        private UsableItem equippedItem = null;
+
         // Safely get an inventory reference (serialized field preferred, fallback to singleton)
         private Inventory GetInventory()
         {
@@ -102,6 +106,7 @@ namespace SurvivorSystem
 
                 HandleInteraction();
                 HandleOutlineRaycast();
+                HandleChangeSelectedItem();
             }
 
         void HandleInteraction()
@@ -319,17 +324,16 @@ namespace SurvivorSystem
                     if (slotIndex != -1)
                     {
                         Debug.Log("Item picked: " + item.itemName);
-
-                        bool placedInSlot = false;
-
-                        if (objectHandler != null)
+                        // Équiper seulement si la main est libre
+                        if (!objectInHand)
                         {
-                            // Placer l'objet dans la main du joueur
-                            item.transform.SetParent(objectHandler);
-                            item.transform.localPosition = Vector3.zero;
-                            item.transform.localRotation = Quaternion.identity;
-                            item.gameObject.SetActive(true); 
-                            placedInSlot = true;
+                            EquipSelectedItem();
+                        }
+                        else
+                        {
+                            // Garder l'objet dans l'inventaire, invisible
+                            item.gameObject.SetActive(false);
+                            item.transform.SetParent(null);
                         }
                     }
                     else
@@ -368,6 +372,34 @@ namespace SurvivorSystem
             item.Use();
         }
 
+        private void HandleChangeSelectedItem()
+        {
+            #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            if (Mouse.current == null) return;
+            float scrollDelta = Mouse.current.scroll.y.ReadValue();
+            #else
+            float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
+            #endif
+
+            if (scrollDelta != 0f)
+            {
+                Inventory inv = GetInventory();
+                if (inv == null)
+                {
+                    Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
+                    return;
+                }
+
+                if (scrollDelta > 0f)
+                    inv.NextItem();
+                else
+                    inv.PreviousItem();
+
+                // Mettre à jour l'affichage de l'objet en main
+                EquipSelectedItem();
+            }
+        }
+
 
         private void DropSelectedItem()
         {
@@ -387,6 +419,54 @@ namespace SurvivorSystem
             item.transform.SetParent(null);
 
             inv.RemoveSelectedItem();
+
+            // Libère la main et l'état visuel
+            equippedItem = null;
+            objectInHand = false;
+        }
+
+        // Équipe visuellement l'objet actuellement sélectionné dans l'inventaire
+        private void EquipSelectedItem()
+        {
+            Inventory inv = GetInventory();
+            if (inv == null) return;
+
+            UsableItem selected = inv.GetSelectedItem();
+            if (selected == equippedItem) return;
+
+            // Désactiver l'ancien équipé
+            if (equippedItem != null)
+            {
+                equippedItem.gameObject.SetActive(false);
+                equippedItem.transform.SetParent(null);
+            }
+
+            equippedItem = selected;
+
+            if (equippedItem == null)
+            {
+                objectInHand = false;
+                return;
+            }
+
+            if (objectHandler != null)
+            {
+                equippedItem.transform.SetParent(objectHandler);
+                equippedItem.transform.localPosition = Vector3.zero;
+                equippedItem.transform.localRotation = Quaternion.identity;
+                if (equippedItem is GunItem)
+                {
+                    equippedItem.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                }
+                equippedItem.gameObject.SetActive(true);
+                objectInHand = true;
+            }
+            else
+            {
+                // Pas de handler: masquer l'objet
+                equippedItem.gameObject.SetActive(false);
+                objectInHand = false;
+            }
         }
 
         void HandleOutlineRaycast()
@@ -396,27 +476,27 @@ namespace SurvivorSystem
             if (Physics.Raycast(ray, out RaycastHit hit, 3f))
             {
                 OutlineTarget target = hit.collider.GetComponent<OutlineTarget>();
+                if (target == null)
+                    target = hit.collider.GetComponentInParent<OutlineTarget>();
 
                 if (target != null)
                 {
-                    // Désactive l'ancien
                     if (currentOutlined != null && currentOutlined != target)
                         currentOutlined.SetOutlined(false);
 
-                    // Active le nouveau
                     currentOutlined = target;
                     currentOutlined.SetOutlined(true);
                     return;
                 }
             }
 
-            // Rien visé
             if (currentOutlined != null)
             {
                 currentOutlined.SetOutlined(false);
                 currentOutlined = null;
             }
         }
+
     }
 
 }
