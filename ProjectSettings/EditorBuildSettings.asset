@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/The_Viking_Village.unity
     guid: 217f50a4b9fbfda41b4f6faee8d22d02
+  - enabled: 1
+    path: Assets/Widgets/Scenes/WidgetsQuickstart.unity
+    guid: a36cdf25833a03f4494e370a7d8f3551
+  - enabled: 1
+    path: Assets/Scenes/LobbyMenu.unity
+    guid: 2393f6cabed9f654799bab0d0d6b4d16
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
