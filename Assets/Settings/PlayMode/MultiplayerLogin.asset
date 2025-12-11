@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a689d91966dfb46499fb63f130d9b905, type: 3}
+  m_Name: MultiplayerLogin
+  m_EditorClassIdentifier: Unity.Multiplayer.PlayMode.Scenarios.Editor::Unity.Multiplayer.PlayMode.Scenarios.Editor.ScenarioConfig
+  m_Description: 
+  m_EnableEditors: 0
+  m_MainEditorInstance:
+    Name: Main Editor
+    <CorrespondingNodeId>k__BackingField: Main Editor|0_run
+    m_Nodes:
+    - Main Editor|0_run
+    - Main Editor|0_deploy
+    m_PlayerTag: 
+    m_InitialScene: {fileID: 102900000, guid: 32f1bea02fbf37244b385ee0ca332512, type: 3}
+  m_EditorInstances: []
+  m_LocalInstances:
+  - Name: J1
+    <CorrespondingNodeId>k__BackingField: J1 - Run
+    m_Nodes:
+    - J1 - Build
+    - J1 - Run
+    m_BuildProfile: {fileID: 11400000, guid: 91aff3f334a50f74c92e0112a43008be, type: 2}
+    advancedConfiguration:
+      m_StreamLogsToMainEditor: 1
+      m_LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
+      m_Arguments: -screen-fullscreen 0 -screen-width 1024 -screen-height 720
+      m_DeviceID: 
+      m_DeviceName: 
+  - Name: J2
+    <CorrespondingNodeId>k__BackingField: J2 - Run
+    m_Nodes:
+    - J2 - Build
+    - J2 - Run
+    m_BuildProfile: {fileID: 11400000, guid: 91aff3f334a50f74c92e0112a43008be, type: 2}
+    advancedConfiguration:
+      m_StreamLogsToMainEditor: 1
+      m_LogsColor: {r: 0.8792453, g: 0.13105722, b: 0.13105722, a: 1}
+      m_Arguments: -screen-fullscreen 0 -screen-width 1024 -screen-height 720
+      m_DeviceID: 
+      m_DeviceName: 
+  - Name: J3
+    <CorrespondingNodeId>k__BackingField: J3 - Run
+    m_Nodes:
+    - J3 - Build
+    - J3 - Run
+    m_BuildProfile: {fileID: 11400000, guid: 91aff3f334a50f74c92e0112a43008be, type: 2}
+    advancedConfiguration:
+      m_StreamLogsToMainEditor: 1
+      m_LogsColor: {r: 0.36470592, g: 0.8666667, b: 0.39443794, a: 1}
+      m_Arguments: -screen-fullscreen 0 -screen-width 1024 -screen-height 720
+      m_DeviceID: 
+      m_DeviceName: 
+  - Name: J4
+    <CorrespondingNodeId>k__BackingField: J4 - Run
+    m_Nodes:
+    - J4 - Build
+    - J4 - Run
+    m_BuildProfile: {fileID: 11400000, guid: 91aff3f334a50f74c92e0112a43008be, type: 2}
+    advancedConfiguration:
+      m_StreamLogsToMainEditor: 1
+      m_LogsColor: {r: 0.8666667, g: 0.36470592, b: 0.8124445, a: 1}
+      m_Arguments: -screen-fullscreen 0 -screen-width 1024 -screen-height 720
+      m_DeviceID: 
+      m_DeviceName: 
+  m_RemoteInstances: []
+  m_OverridePort: 0
+  m_Port: 0
+  m_MainEditorInstanceObsolete:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

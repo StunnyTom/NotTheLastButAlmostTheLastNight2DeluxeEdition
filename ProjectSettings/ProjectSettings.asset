@@ -883,11 +883,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: b2257489-1a6b-4244-a09a-d6d32de71af3
+  cloudProjectId: bd660881-64af-4518-9c97-f82c383d1cd8
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: ChaseProject
-  organizationId: unity_d0a47e3143d7f433256e
+  organizationId: reight123
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 1
   hmiLoadingImage: {fileID: 0}
