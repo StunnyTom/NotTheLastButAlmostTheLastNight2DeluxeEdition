@@ -9,6 +9,6 @@ public class OutlineTarget : MonoBehaviour
         gameObject.layer = state ? LayerMask.NameToLayer("Usable") 
                                  : LayerMask.NameToLayer("Default");
         isOutlined = state;
-        Debug.Log("OutlineTarget: " + gameObject.name + " outlined state set to " + state);
+        //Debug.Log("OutlineTarget: " + gameObject.name + " outlined state set to " + state);
     }
 }

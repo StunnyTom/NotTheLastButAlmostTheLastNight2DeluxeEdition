@@ -314,35 +314,38 @@ namespace SurvivorSystem
                 if (item != null)
                 {
                     Inventory inv = GetInventory();
-                    if (inv == null)
-                    {
-                        Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
-                        return;
-                    }
+                    if (inv == null) return;
+                    if (item is PressurePlateItem plate && plate.IsPressed()) return;
 
                     int slotIndex = inv.AddItem(item);
+
                     if (slotIndex != -1)
                     {
                         Debug.Log("Item picked: " + item.itemName);
-                        // Équiper seulement si la main est libre
+
                         if (!objectInHand)
                         {
+                            // Seulement équiper si la main est vide !
                             EquipSelectedItem();
                         }
                         else
                         {
-                            // Garder l'objet dans l'inventaire, invisible
+                            // Main occupée => on place juste dans l'inventaire
+                            // MAIS surtout : on bloque tout changement de sélection
+                            inv.ForceKeepCurrentSelection();
+
                             item.gameObject.SetActive(false);
                             item.transform.SetParent(null);
                         }
                     }
                     else
                     {
-                        Debug.Log("Inventaire plein, impossible de ramasser l'objet : " + item.itemName);
+                        Debug.Log("Inventaire plein.");
                     }
                 }
             }
         }
+
 
 
         private void HandleItemUse()
@@ -406,24 +409,45 @@ namespace SurvivorSystem
             Inventory inv = GetInventory();
             if (inv == null)
             {
-                Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
+                Debug.LogWarning("Inventory reference is null.");
                 return;
             }
 
-            UsableItem item = inv.GetSelectedItem();
-            if (item == null) return;
+            UsableItem itemToDrop = inv.GetSelectedItem();
+            if (itemToDrop == null) return;
 
-            // On remet l'objet devant le joueur
-            item.transform.position = transform.position + transform.forward * 1f;
-            item.gameObject.SetActive(true);
-            item.transform.SetParent(null);
+            // On enlève de l'inventaire et on récupère l'objet supprimé
+            UsableItem removed = inv.RemoveSelectedItem();
 
-            inv.RemoveSelectedItem();
+            // Si c'est bien l'objet que l'on vient de supprimer (sécurité)
+            if (removed != null)
+            {
+                // On remet l'objet physiquement dans la scène devant le joueur
+                removed.transform.SetParent(null);
+                removed.transform.position = transform.position + transform.forward * 1f;
+                removed.gameObject.SetActive(true);
 
-            // Libère la main et l'état visuel
-            equippedItem = null;
-            objectInHand = false;
+                // Si c'était une plaque de pression, restore son état physique
+                if (removed is PressurePlateItem pressurePlate)
+                {
+                    pressurePlate.transform.rotation = Quaternion.identity;
+                    pressurePlate.OnDroppedOrUsedByPlayer();
+                    pressurePlate.RegisterRestingState(); // <-- IMPORTANT
+                }
+
+                // Nettoyage visuel / état main
+                if (equippedItem == removed)
+                {
+                    equippedItem = null;
+                    objectInHand = false;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("RemoveSelectedItem returned null while trying to drop.");
+            }
         }
+
 
         // Équipe visuellement l'objet actuellement sélectionné dans l'inventaire
         private void EquipSelectedItem()
@@ -432,9 +456,11 @@ namespace SurvivorSystem
             if (inv == null) return;
 
             UsableItem selected = inv.GetSelectedItem();
+
+            // Si la sélection n'a pas changé (déjà équipé) : rien à faire
             if (selected == equippedItem) return;
 
-            // Désactiver l'ancien équipé
+            // Désactiver l'ancien équipé proprement (sans le supprimer de l'inventaire)
             if (equippedItem != null)
             {
                 equippedItem.gameObject.SetActive(false);
@@ -451,23 +477,31 @@ namespace SurvivorSystem
 
             if (objectHandler != null)
             {
-                equippedItem.transform.SetParent(objectHandler);
+                // Parent proprement l'objet de l'inventaire à la main
+                equippedItem.transform.SetParent(objectHandler, false);
                 equippedItem.transform.localPosition = Vector3.zero;
                 equippedItem.transform.localRotation = Quaternion.identity;
+
                 if (equippedItem is GunItem)
+                    equippedItem.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+
+                if (equippedItem is PressurePlateItem)
                 {
                     equippedItem.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                    equippedItem.transform.localPosition = new Vector3(0f, -0.1f, 0.2f);
                 }
+
                 equippedItem.gameObject.SetActive(true);
                 objectInHand = true;
             }
             else
             {
-                // Pas de handler: masquer l'objet
+                // Si pas de handler, on cache l'objet (consistant)
                 equippedItem.gameObject.SetActive(false);
                 objectInHand = false;
             }
         }
+
 
         void HandleOutlineRaycast()
         {

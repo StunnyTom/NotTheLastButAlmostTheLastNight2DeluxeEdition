@@ -5,9 +5,14 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
 
+    [Header("Inventory")]
+    public int maxItems = 4;
+
     private List<UsableItem> items = new List<UsableItem>();
     private int selectedIndex = 0;
-    public int maxItems = 4;
+
+    // Permet d’empêcher AddItem de changer la sélection
+    private bool maintainSelection = false;
 
     private void Awake()
     {
@@ -15,22 +20,43 @@ public class Inventory : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    //──────────────────────────────────────────────────────────────
+    // ADD ITEM
+    //──────────────────────────────────────────────────────────────
     public int AddItem(UsableItem item)
     {
-        if (items.Count >= maxItems) return -1;
+        if (items.Count >= maxItems)
+            return -1;
+
         items.Add(item);
-        Debug.Log("Added item: " + item.itemName);
-        // Ne pas modifier l'item sélectionné actuel
-        return items.Count - 1;
+        int index = items.Count - 1;
+
+        // Ne change la sélection QUE si rien n’empêche
+        if (!maintainSelection)
+            selectedIndex = index;
+
+        // Reset du flag
+        maintainSelection = false;
+
+        return index;
     }
 
-    public void RemoveSelectedItem()
+    //──────────────────────────────────────────────────────────────
+    // REMOVE SELECTED ITEM
+    //──────────────────────────────────────────────────────────────
+    public UsableItem RemoveSelectedItem()
     {
-        if (items.Count == 0) return;
+        if (items.Count == 0)
+            return null;
+
+        UsableItem removed = items[selectedIndex];
         items.RemoveAt(selectedIndex);
-        selectedIndex = Mathf.Clamp(selectedIndex, 0, items.Count - 1);
+
+        selectedIndex = Mathf.Clamp(selectedIndex, 0, Mathf.Max(0, items.Count - 1));
+        return removed;
     }
 
+    //──────────────────────────────────────────────────────────────
     public UsableItem GetSelectedItem()
     {
         if (items.Count == 0) return null;
@@ -40,6 +66,7 @@ public class Inventory : MonoBehaviour
     public UsableItem NextItem()
     {
         if (items.Count == 0) return null;
+
         selectedIndex = (selectedIndex + 1) % items.Count;
         return items[selectedIndex];
     }
@@ -47,7 +74,16 @@ public class Inventory : MonoBehaviour
     public UsableItem PreviousItem()
     {
         if (items.Count == 0) return null;
+
         selectedIndex = (selectedIndex - 1 + items.Count) % items.Count;
         return items[selectedIndex];
+    }
+
+    //──────────────────────────────────────────────────────────────
+    // Empêche la sélection de changer à l’ajout d’un item
+    //──────────────────────────────────────────────────────────────
+    public void ForceKeepCurrentSelection()
+    {
+        maintainSelection = true;
     }
 }
