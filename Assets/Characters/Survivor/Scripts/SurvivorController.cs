@@ -11,7 +11,7 @@ namespace SurvivorSystem
     /// Controller for Survivor players
     /// Based on MonsterController but without attack
     /// </summary>
-    public class SurvivorController : MonoBehaviour
+    public class SurvivorController : MonoBehaviour, IDamageable
     {
         [Header("Movement Settings")]
         [Range(0f, 20f)] public float walkSpeed = 3f;
@@ -67,10 +67,20 @@ namespace SurvivorSystem
         private bool isLookEnabled = true;
         private bool isMoveEnabled = true;
         private OutlineTarget currentOutlined;
+        private bool isDead = false;
 
         // Inventory helper
         private bool objectInHand = false;
         private UsableItem equippedItem = null;
+
+        // Ragdoll
+        private Rigidbody[] ragdollRigidbodies;
+        private Collider[] ragdollColliders;
+
+
+        [Header("Debug Options")]
+        // Tests
+        public bool isStatic = false;
 
         // Safely get an inventory reference (serialized field preferred, fallback to singleton)
         private Inventory GetInventory()
@@ -84,6 +94,13 @@ namespace SurvivorSystem
             characterController = GetComponent<CharacterController>();
             animator = GetComponent<Animator>();
 
+            // === RAGDOLL SETUP ===
+            ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
+            ragdollColliders = GetComponentsInChildren<Collider>();
+            SetRagdoll(false);
+
+            if (isStatic) return;
+
             if (playerCamera != null)
                 cam = playerCamera.GetComponent<Camera>();
 
@@ -96,8 +113,10 @@ namespace SurvivorSystem
             yVelocity = rotY;
         }
 
+
         void Update()
             {
+                if (isStatic || isDead) return;
                 CheckGrounded();
                 HandleLook();
                 HandleMovement();
@@ -530,6 +549,50 @@ namespace SurvivorSystem
                 currentOutlined = null;
             }
         }
+
+        private void SetRagdoll(bool enabled)
+        {
+            // Animator
+            if (animator != null)
+                animator.enabled = !enabled;
+
+            // CharacterController
+            if (characterController != null)
+                characterController.enabled = !enabled;
+
+            foreach (var rb in ragdollRigidbodies)
+            {
+                // On ignore le rigidbody principal (souvent sur le root)
+                if (rb.gameObject == gameObject) continue;
+
+                rb.isKinematic = !enabled;
+            }
+
+            foreach (var col in ragdollColliders)
+            {
+                // On garde le collider principal du joueur désactivé à la mort
+                if (col.gameObject == gameObject) continue;
+
+                col.enabled = enabled;
+            }
+        }
+
+
+        public void OnShot()
+        {
+            if (isDead) return;
+            isDead = true;
+
+            Debug.Log("Survivor shot → dead");
+
+            // Coupe toute logique de gameplay
+            SetControl(false);
+            moveDirection = Vector3.zero;
+
+            // ACTIVE LE RAGDOLL
+            SetRagdoll(true);
+        }
+
 
     }
 
