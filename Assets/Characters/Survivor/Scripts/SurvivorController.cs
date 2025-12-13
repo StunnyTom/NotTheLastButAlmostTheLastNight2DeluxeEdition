@@ -355,6 +355,8 @@ namespace SurvivorSystem
 
                             item.gameObject.SetActive(false);
                             item.transform.SetParent(null);
+
+                            EquipSelectedItem();
                         }
                     }
                     else
@@ -390,6 +392,14 @@ namespace SurvivorSystem
 
             UsableItem item = inv.GetSelectedItem();
             if (item == null) return;
+
+            // Sécurité anti-désync
+            if (item != equippedItem)
+            {
+                Debug.LogWarning("Inventory desync detected → resyncing");
+                EquipSelectedItem();
+                return;
+            }
 
             item.Use();
         }
