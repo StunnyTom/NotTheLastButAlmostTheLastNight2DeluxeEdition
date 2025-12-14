@@ -444,6 +444,7 @@ namespace SurvivorSystem
 
             UsableItem itemToDrop = inv.GetSelectedItem();
             if (itemToDrop == null) return;
+            if (itemToDrop is GunItem) return; // On ne peut pas drop les armes à feu 
 
             // On enlève de l'inventaire et on récupère l'objet supprimé
             UsableItem removed = inv.RemoveSelectedItem();

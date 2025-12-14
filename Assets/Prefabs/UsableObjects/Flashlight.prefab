@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6647795461534966300}
   - component: {fileID: 2349689763694477159}
   - component: {fileID: 4631736974593361963}
+  - component: {fileID: 6973189193956985936}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Usable
@@ -171,6 +172,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlineTarget
   isOutlined: 0
+--- !u!114 &6973189193956985936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3956245864964951150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364e74743d5e4b64290163209216131d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemIcon
+  icon: {fileID: 21300000, guid: fdb31c1cf878e25419efe3dd27000bf7, type: 3}
 --- !u!1001 &7218327058092173280
 PrefabInstance:
   m_ObjectHideFlags: 0
