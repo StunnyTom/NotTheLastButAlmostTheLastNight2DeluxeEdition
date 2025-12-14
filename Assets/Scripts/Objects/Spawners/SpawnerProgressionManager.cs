@@ -2,23 +2,48 @@ using UnityEngine;
 
 public class SpawnerProgressionManager : MonoBehaviour
 {
-    public ObjectSpawnerPlate[] plates;
+    [Header("Spawner Plates")]
+    public ObjectSpawnerPlate lampPlate;
+    public ObjectSpawnerPlate pressurePlate;
 
-    public void UnlockPlate(int index)
+    private int completedObjectives = 0;
+
+    private void Start()
     {
-        if (index < 0 || index >= plates.Length) return;
-        plates[index].Unlock();
+        // Lampes disponibles dès le début
+        lampPlate.Unlock();
     }
 
-    public void ReduceAllCooldowns(float amount)
-    {
-        foreach (var plate in plates)
-            plate.ReduceCooldown(amount);
-    }
-
-    // Exemple
+    /// <summary>
+    /// À appeler à chaque objectif secondaire validé
+    /// </summary>
     public void OnSecondaryObjectiveCompleted()
     {
-        ReduceAllCooldowns(5f);
+        completedObjectives++;
+
+        switch (completedObjectives)
+        {
+            case 1:
+                UnlockPressurePlate();
+                break;
+
+            case 2:
+                ReduceAllCooldownsByHalf();
+                break;
+        }
+    }
+
+    private void UnlockPressurePlate()
+    {
+        pressurePlate.Unlock();
+        Debug.Log("Plaque de pression débloquée");
+    }
+
+    private void ReduceAllCooldownsByHalf()
+    {
+        lampPlate.MultiplyCooldown(0.5f);
+        pressurePlate.MultiplyCooldown(0.5f);
+
+        Debug.Log("Cooldowns divisés par 2");
     }
 }

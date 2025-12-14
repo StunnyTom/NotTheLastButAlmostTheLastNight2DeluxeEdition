@@ -5,6 +5,7 @@ public class PentagramObjective : MonoBehaviour
     [Header("References")]
     [SerializeField] private PentagramCandleGroup candleGroup;
     [SerializeField] private float requiredTime = 30f; // Temps pour valider l'objectif
+    [SerializeField] private SpawnerProgressionManager spawnerManager;
 
     private float timer = 0f;
     private bool playerInside = false;
@@ -48,6 +49,7 @@ public class PentagramObjective : MonoBehaviour
         {
             Debug.Log("Pentagram objective completed!");
             playerInside = false;
+            notifySpawnerManager();
         }
     }
 
@@ -66,5 +68,12 @@ public class PentagramObjective : MonoBehaviour
         playerInside = false;
         savedProgress += timer; // sauvegarde la progression
         timer = 0f;
+    }
+
+    private void notifySpawnerManager(){
+        if (spawnerManager != null)
+        {
+            spawnerManager.OnSecondaryObjectiveCompleted();
+        }
     }
 }

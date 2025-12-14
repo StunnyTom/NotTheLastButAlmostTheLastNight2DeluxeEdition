@@ -41,6 +41,12 @@ public class ObjectSpawnerPlate : MonoBehaviour
         currentCooldown = Mathf.Max(1f, currentCooldown - seconds);
     }
 
+    public void MultiplyCooldown(float factor)
+    {
+        currentCooldown = Mathf.Max(0.1f, currentCooldown * factor);
+    }
+
+
     // ─────────────────────────────────────────
     // INTERACTION JOUEUR
     // ─────────────────────────────────────────

@@ -2380,6 +2380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PentagramObjective
   candleGroup: {fileID: 50528674}
   requiredTime: 30
+  spawnerManager: {fileID: 0}
 --- !u!1001 &50579143
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3633,6 +3634,96 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 84634507}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &84739551
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 779558632}
+    m_Modifications:
+    - target: {fileID: 928948438777713375, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_Name
+      value: Spawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -32.506
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.1641397
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 42.309
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.97884184
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.20461828
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 23.614
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: isUnlocked
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: itemPrefab
+      value: 
+      objectReference: {fileID: 585095273070797486, guid: 586330069abf20e41947fc8fd7242600,
+        type: 3}
+    - target: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: baseCooldown
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090148573092029177, guid: e9156be3732c3ed46935cdf5aded8dbe,
+        type: 3}
+      propertyPath: parentPlate
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3205551635519554444, guid: e9156be3732c3ed46935cdf5aded8dbe, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e9156be3732c3ed46935cdf5aded8dbe, type: 3}
 --- !u!4 &86809596 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 3ccf2bc3f937d3649a1d2b0aeb03ba51,
@@ -7546,6 +7637,43 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 180308655}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &180376122
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterDepthMap
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 6
+  m_Width: 1024
+  m_Height: 1024
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_UseDynamicScaleExplicit: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1001 &181372381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13642,6 +13770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PentagramObjective
   candleGroup: {fileID: 316555136}
   requiredTime: 30
+  spawnerManager: {fileID: 0}
 --- !u!1001 &318357879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19513,6 +19642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PentagramObjective
   candleGroup: {fileID: 1325871922}
   requiredTime: 30
+  spawnerManager: {fileID: 0}
 --- !u!1001 &418714737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36325,6 +36455,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6475624008814855678}
+  - {fileID: 1030747125}
+  - {fileID: 1157414752}
   m_Father: {fileID: 141537215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &779690836
@@ -38175,43 +38307,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 812860453}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &814446682
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: WaterDepthMap
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &815153024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48264,6 +48359,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1868700200}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1030747125 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
+    type: 3}
+  m_PrefabInstance: {fileID: 84739551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1030747126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
+    type: 3}
+  m_PrefabInstance: {fileID: 84739551}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7085a306cb81d104fb726a1ac754ecc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawnerPlate
 --- !u!1 &1034632485
 GameObject:
   m_ObjectHideFlags: 0
@@ -53619,6 +53732,52 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1156263889}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1157414751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1157414752}
+  - component: {fileID: 1157414753}
+  m_Layer: 0
+  m_Name: SpawnerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1157414752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157414751}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 779558632}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1157414753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157414751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8d54a7150f5e24dbfb4b735606ab65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnerProgressionManager
+  lampPlate: {fileID: 6475624008814855679}
+  pressurePlate: {fileID: 1030747126}
 --- !u!1001 &1158009857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79667,6 +79826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PentagramObjective
   candleGroup: {fileID: 1785896566}
   requiredTime: 30
+  spawnerManager: {fileID: 0}
 --- !u!1001 &1788249680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96643,6 +96803,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: PressurePlate
       objectReference: {fileID: 0}
+    - target: {fileID: 8303466826229548344, guid: 586330069abf20e41947fc8fd7242600,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 1d1c3b0d3d6531745a5c7d260c76e860,
+        type: 3}
     - target: {fileID: 9143068235314054873, guid: 586330069abf20e41947fc8fd7242600,
         type: 3}
       propertyPath: m_Size.x
@@ -96743,6 +96909,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8863318234812233980}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6475624008814855679 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
+    type: 3}
+  m_PrefabInstance: {fileID: 8863318234812233980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7085a306cb81d104fb726a1ac754ecc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawnerPlate
 --- !u!1001 &8863318234812233980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96809,7 +96987,7 @@ PrefabInstance:
     - target: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
         type: 3}
       propertyPath: isUnlocked
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2735184380064154857, guid: e9156be3732c3ed46935cdf5aded8dbe,
         type: 3}
