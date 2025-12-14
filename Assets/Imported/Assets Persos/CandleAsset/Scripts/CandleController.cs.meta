@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2d4dd84f8f54bbe4ba5b0a4eb1b484ef
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - flameVfx: {fileID: 919132149155446097, guid: 0dcb6c6ab69bbca46bb1f59262d81a17,
+      type: 3}
+  - flameLight: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
