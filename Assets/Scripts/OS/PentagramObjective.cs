@@ -49,7 +49,7 @@ public class PentagramObjective : MonoBehaviour
         {
             Debug.Log("Pentagram objective completed!");
             playerInside = false;
-            notifySpawnerManager();
+            NotifySpawnerManager();
         }
     }
 
@@ -70,7 +70,7 @@ public class PentagramObjective : MonoBehaviour
         timer = 0f;
     }
 
-    private void notifySpawnerManager(){
+    private void NotifySpawnerManager(){
         if (spawnerManager != null)
         {
             spawnerManager.OnSecondaryObjectiveCompleted();
