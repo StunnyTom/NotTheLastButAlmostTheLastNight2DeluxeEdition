@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Guide du Syst&egrave;me de Comp&eacute;tences</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="guide-du-système-de-compétences">Guide du Système de Compétences</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Ce module permet d'ajouter très facilement des compétences à n'importe quel personnage (Monstre ou Survivant) et de lier ces compétences à l'interface (HUD) automatiquement.</p>
+<p>Il repose sur 3 éléments :</p>
+<ol>
+<li><strong>SkillData (ScriptableObject)</strong> : La fiche d'identité de la compétence (Nom, Icône, description, cooldown par défaut).</li>
+<li><strong>CharacterSkillManager</strong> : Le composant à placer sur le personnage qui contient la liste des compétences actives.</li>
+<li><strong>L'Inspector Unity</strong> : Où vous ferez les liens (Drag &amp; Drop).</li>
+</ol>
+<hr>
+<h2 id="1-créer-une-nouvelle-compétence">1. Créer une Nouvelle Compétence</h2>
+<p>Pour définir qu'une compétence &quot;exist&quot;, vous devez créer un fichier de données pour elle.</p>
+<ol>
+<li>Allez dans la fenêtre <strong>Project</strong>.</li>
+<li>Faites <strong>Clic Droit</strong> -&gt; <strong>Create</strong> -&gt; <strong>Game</strong> -&gt; <strong>Skill Data</strong>.</li>
+<li>Donnez un nom au fichier (ex: <code>Skill_Roar</code>).</li>
+<li>Sélectionnez le fichier et configurez l'Inspector :
+<ul>
+<li><strong>Skill Name</strong> : Le nom affiché (ex: &quot;Rugissement&quot;).</li>
+<li><strong>Icon</strong> : L'image qui apparaîtra dans le HUD.</li>
+<li><strong>Default Cooldown</strong> : Le temps d'attente en secondes.</li>
+<li><strong>Description</strong> : (Optionnel) Pour info.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-assigner-une-compétence-à-un-personnage">2. Assigner une Compétence à un Personnage</h2>
+<p>Pour qu'un personnage puisse utiliser cette compétence :</p>
+<ol>
+<li>Sélectionnez votre personnage dans la scène (ex: <code>Monster</code>).</li>
+<li>Assurez-vous qu'il possède le composant <code>MonsterController</code> (qui hérite maintenant de <code>CharacterSkillManager</code>).</li>
+<li>Cherchez la section <strong>Skills Configuration</strong> (Liste <code>Skills</code>).</li>
+<li>Cliquez sur <strong>+</strong> pour ajouter une entrée.</li>
+<li><strong>Remplissez les champs</strong> :
+<ul>
+<li><strong>Skill Data</strong> : Glissez le fichier <code>Skill_Roar</code> créé à l'étape 1.</li>
+<li><strong>Key</strong> : Choisissez la touche du clavier (ex: <code>A</code> pour Azerty).</li>
+<li><strong>On Execute ()</strong> : C'est ici que la magie opère. Cliquez sur <strong>+</strong>.
+<ul>
+<li>Glissez l'objet qui contient le script de logique (ex: Le <code>MonsterController</code> lui-même).</li>
+<li>Choisissez la fonction à appeler (ex: <code>MonsterController.TriggerAttack</code> ou <code>MonsterRageSystem.AddRage</code>).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-le-cas-spécial--la-rage-du-monstre">3. Le Cas Spécial : La Rage du Monstre</h2>
+<p>Le système de Rage nécessite une logique spécifique (la barre doit être pleine).
+C'est déjà codé dans <code>MonsterController</code> !</p>
+<p>Pour configurer l'Ultime :</p>
+<ol>
+<li>Ajoutez une nouvelle compétence dans la liste du Monstre.</li>
+<li>Mettez la touche <strong>R</strong>.</li>
+<li>Dans <strong>Skill Data</strong>, créez/assignez <code>Skill_Ultimate</code>.</li>
+<li>Dans <strong>On Execute ()</strong>, glissez l'objet <code>Monster</code> (ou celui qui a le script <code>MonsterRageSystem</code>).</li>
+<li>Choisissez la fonction <code>MonsterRageSystem.TryUseUltimate</code>.</li>
+</ol>
+<blockquote>
+<p><strong>Note</strong> : Le code vérifie automatiquement si la Rage est pleine avant de lancer l'action. Si elle n'est pas pleine, rien ne se passe (et le cooldown ne se lance pas).</p>
+</blockquote>
+<hr>
+<h2 id="4-setup-du-hud-interface">4. Setup du HUD (Interface)</h2>
+<p>Pour que les cases s'affichent :</p>
+<ol>
+<li>Il doit y avoir un objet avec le script <code>HUDManager</code> dans la scène (attaché à un Canvas).</li>
+<li>Assignez le Prefab <code>HUDItem</code> dans le champ <strong>Hud Item Prefab</strong> du Manager.</li>
+<li>Assignez un conteneur (ex: un Panel avec <code>HorizontalLayoutGroup</code>) dans <strong>Items Container</strong>.</li>
+<li>Au lancement du jeu (<code>Start</code>), le Monstre va automatiquement dire au HUD &quot;Hé, voici mes compétences, affiche-les !&quot;.</li>
+</ol>
+<h2 id="en-résumé">En Résumé</h2>
+<ul>
+<li><strong>Graphistes / GD</strong> : Créez des <code>SkillData</code> et dessinez les icônes.</li>
+<li><strong>Intégrateurs</strong> : Glissez les <code>SkillData</code> sur le Monstre et liez les touches.</li>
+<li><strong>Programmeurs</strong> : Si vous voulez une nouvelle mécanique (ex: &quot;Voler&quot;), créez juste la fonction <code>public void StartFlying() {...}</code> n'importe où, et liez-la dans l'Inspector via l'event <strong>On Execute</strong>. Pas besoin de toucher au système de HUD !</li>
+</ul>
+
+            
+            
+        </body>
+        </html>
