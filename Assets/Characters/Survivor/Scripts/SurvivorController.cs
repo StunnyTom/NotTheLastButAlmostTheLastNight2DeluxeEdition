@@ -47,6 +47,12 @@ namespace SurvivorSystem
         public Inventory playerInventory;
         public Transform objectHandler;
 
+        [Header("Secondary Objectives")]
+        public float osRayDistance = 3f;
+        [SerializeField] SimpleProgressBar progressBar;
+
+
+
         // Components
         private CharacterController characterController;
         private Camera cam; 
@@ -68,6 +74,7 @@ namespace SurvivorSystem
         private bool isMoveEnabled = true;
         private OutlineTarget currentOutlined;
         private bool isDead = false;
+        private ElectricCabinetOS currentOS;
 
         // Inventory helper
         private bool objectInHand = false;
@@ -126,6 +133,7 @@ namespace SurvivorSystem
                 HandleInteraction();
                 HandleOutlineRaycast();
                 HandleChangeSelectedItem();
+                HandleSecondaryObjectiveRaycast();
             }
 
         void HandleInteraction()
@@ -309,6 +317,56 @@ namespace SurvivorSystem
                 thirdPersonCamera.LookAt(transform.position + Vector3.up * 1.5f);
             }
         }
+
+        void HandleSecondaryObjectiveRaycast()
+        {
+            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, osRayDistance))
+            {
+                ElectricCabinetOS os = hit.collider.GetComponent<ElectricCabinetOS>();
+
+                // On regarde un OS valide et non complété
+                if (os != null && !os.IsCompleted)
+                {
+                    // Changement d'OS ciblé
+                    if (currentOS != os)
+                    {
+                        currentOS?.ResetProgress();
+                        currentOS = os;
+
+                        progressBar.gameObject.SetActive(true);
+                        progressBar.ResetBar();
+                    }
+
+                    // Avancement
+                    os.Tick(Time.deltaTime);
+                    progressBar.SetProgress(os.Progress01);
+
+                    // OS terminé
+                    if (os.IsCompleted)
+                    {
+                        progressBar.Full();
+                        progressBar.gameObject.SetActive(false);
+                        currentOS = null;
+                    }
+
+                    return;
+                }
+            }
+
+            // Raycast ne touche plus l'OS
+            if (currentOS != null)
+            {
+                currentOS.ResetProgress();
+                currentOS = null;
+
+                progressBar.ResetBar();
+                progressBar.gameObject.SetActive(false);
+            }
+        }
+
+
 
         public void SetControl(bool newState)
         {
