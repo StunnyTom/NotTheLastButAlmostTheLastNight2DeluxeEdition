@@ -30,21 +30,32 @@ namespace Antigravity.Recovery
 
                 try
                 {
-                    // Search for "Capsule" or "Debug" objects with MeshRenderers
-                    var renderers = instance.GetComponentsInChildren<MeshRenderer>(true);
-                    foreach (var mr in renderers)
+                    // 1. SPECIFIC TARGET: DEBUG_VISUAL_CAPSULE
+                    // Based on logs, this is the exact name of the object causing issues.
+                    var specificCapsule = instance.transform.Find("DEBUG_VISUAL_CAPSULE");
+                    if (specificCapsule != null && specificCapsule.gameObject.activeSelf)
                     {
-                        // Logic: If it looks like a debug capsule (primitive name) and is active
-                        if (mr.gameObject.name.Contains("Capsule") || mr.gameObject.name.Contains("Cylinder") || mr.gameObject.name.Contains("Debug"))
+                        Undo.RecordObject(specificCapsule.gameObject, "Hide Debug Cylinder");
+                        specificCapsule.gameObject.SetActive(false);
+                        modified = true;
+                        Debug.Log($"[FixPlayerVisuals] SUCCESS: Found and DISABLED 'DEBUG_VISUAL_CAPSULE' in {path}");
+                    }
+                    else
+                    {
+                        // 2. FALLBACK: Search for "Capsule" or "Debug" objects with MeshRenderers recursively
+                        var renderers = instance.GetComponentsInChildren<MeshRenderer>(true);
+                        foreach (var mr in renderers)
                         {
-                            // Don't disable the MAIN mesh if it's named oddly, but usually main mesh is SkinnedMeshRenderer
-                            // Simple primitive capsules often have MeshFilter + MeshRenderer
-                            if (mr.gameObject.GetComponent<MeshFilter>() != null)
+                            if (mr.gameObject.name.Contains("Capsule") || mr.gameObject.name.Contains("Cylinder") || mr.gameObject.name.Contains("Debug"))
                             {
-                                Undo.RecordObject(mr.gameObject, "Hide Debug Cylinder");
-                                mr.enabled = false; // Just disable the renderer, keep collider if needed
-                                modified = true;
-                                Debug.Log($"[FixPlayerVisuals] Disabled Renderer on '{mr.gameObject.name}' in {path}");
+                                // Don't disable the MAIN mesh if it's named oddly
+                                if (mr.gameObject.GetComponent<MeshFilter>() != null)
+                                {
+                                    Undo.RecordObject(mr.gameObject, "Hide Debug Cylinder");
+                                    mr.enabled = false; 
+                                    modified = true;
+                                    Debug.Log($"[FixPlayerVisuals] Fallback: Disabled Renderer on '{mr.gameObject.name}' in {path}");
+                                }
                             }
                         }
                     }
@@ -67,7 +78,7 @@ namespace Antigravity.Recovery
             }
             else
             {
-                Debug.LogWarning("Found no 'Capsule' or 'Cylinder' MeshRenderers to disable. Please check the prefab manually.");
+                Debug.LogWarning("Found no 'DEBUG_VISUAL_CAPSULE' or known debug objects to disable. Please check the prefab manually.");
             }
         }
     }
