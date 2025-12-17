@@ -50,12 +50,21 @@ namespace Antigravity.Recovery
                     rt.offsetMax = new Vector2(-25, 0); // Right padding
                     
                     txt.alignment = TextAlignmentOptions.MidlineLeft;
-                    txt.fontSize = 28;
+                    txt.fontSize = 24; // Slightly smaller to be safe
                     txt.color = new Color(0.9f, 0.9f, 0.9f, 1f);
                     txt.fontStyle = FontStyles.Bold;
-                    
-                    // Add Shadow or Outline if needed? (Skip for now to keep it simple)
+                    txt.enableWordWrapping = false; // CRITICAL FIX: Prevent vertical letter stacking
+                    txt.overflowMode = TextOverflowModes.Ellipsis;
                 }
+
+                // 2b. Update Layout Element (Reuse variable declared above)
+                if (le == null) le = instance.GetComponent<LayoutElement>();
+                if (le == null) le = instance.AddComponent<LayoutElement>();
+                
+                le.minHeight = 50;
+                le.minWidth = 400; // CRITICAL FIX: Ensure it doesn't get squashed to 0 width
+                le.preferredHeight = 50;
+                le.flexibleWidth = 1;
 
                 // Apply changes back to Prefab
                 PrefabUtility.ApplyPrefabInstance(instance, InteractionMode.AutomatedAction);
