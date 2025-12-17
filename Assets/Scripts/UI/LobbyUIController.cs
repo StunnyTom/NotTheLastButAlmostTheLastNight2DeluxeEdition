@@ -150,8 +150,18 @@ public class LobbyUIController : MonoBehaviour
         }
         if (!playerListEntryPrefab) 
         {
-             Debug.LogError("ERROR: 'Player List Entry Prefab' is NOT assigned in Inspector!");
-             return;
+             // Fallback: Try Loading from Resources
+             playerListEntryPrefab = Resources.Load<GameObject>("LobbyPlayerEntry");
+             
+             if (!playerListEntryPrefab)
+             {
+                 Debug.LogError("ERROR: 'Player List Entry Prefab' is NOT assigned in Inspector AND not found in Resources/LobbyPlayerEntry!");
+                 return;
+             }
+             else
+             {
+                 Debug.Log("Resolved 'Player List Entry Prefab' from Resources.");
+             }
         }
 
         // Clear existing
