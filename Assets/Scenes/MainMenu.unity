@@ -532,9 +532,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ac679f914e44ac4e9b8db6eb051e2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RuntimeUIDiagnostics
-  filePath: 
-  reportText: 
-  showgui: 1
 --- !u!224 &186862103 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 576385201803430700, guid: 0a68be1bd13d8694e8d8fe85574ac075,
@@ -836,7 +833,7 @@ MonoBehaviour:
   ConnectionData:
     Address: 127.0.0.1
     Port: 7777
-    ServerListenAddress: 
+    ServerListenAddress: 127.0.0.1
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0

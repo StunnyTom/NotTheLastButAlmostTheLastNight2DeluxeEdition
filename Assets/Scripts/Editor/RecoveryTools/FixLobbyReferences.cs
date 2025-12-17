@@ -21,19 +21,34 @@ public class FixLobbyReferences : Editor
 
         Undo.RecordObject(controller, "Fix Lobby References");
 
-        // 1. Find Content
-        // Expected hierarchy: LobbyPanel -> Background -> ... -> PlayerList -> Viewport -> Content
+        // 1. Find Content (Robust Search)
         if (controller.playerListContent == null)
         {
-             var content = GameObject.Find("Content"); 
-             if (content != null)
+             // Try specific path first (Standard Unity ScrollView structure)
+             Transform contentHelpers = null;
+             
+             // Strategy A: Full Path search
+             var obj = GameObject.Find("LobbyPanel/PlayerList/Viewport/Content");
+             if (obj) contentHelpers = obj.transform;
+
+             // Strategy B: Search inside the controller's hierarchy (if controller is on LobbyPanel)
+             if (contentHelpers == null) contentHelpers = controller.transform.Find("PlayerList/Viewport/Content");
+
+             // Strategy C: Search for unique parent name
+             if (contentHelpers == null)
              {
-                 controller.playerListContent = content.transform;
-                 Debug.Log("Found and Assigned 'playerListContent'.");
+                 var playerList = GameObject.Find("PlayerList");
+                 if (playerList) contentHelpers = playerList.transform.Find("Viewport/Content");
+             }
+
+             if (contentHelpers != null)
+             {
+                 controller.playerListContent = contentHelpers;
+                 Debug.Log($"[FixLobbyReferences] Success! Assigned 'playerListContent' to {contentHelpers.name} (Path: {GetPath(contentHelpers)}).");
              }
              else
              {
-                 Debug.LogWarning("Could not find object named 'Content' in scene.");
+                 Debug.LogError("[FixLobbyReferences] FAILED: Could not find 'PlayerList/Viewport/Content'. Please assign manually!");
              }
         }
 
@@ -108,5 +123,10 @@ public class FixLobbyReferences : Editor
         EditorUtility.DisplayDialog("Rewiring Complete", 
             "I have attempted to reconnect the missing references in LobbyUIController.\n\n" +
             "Please check the inspector to confirm.", "OK");
+    }
+    private static string GetPath(Transform t)
+    {
+        if (t.parent == null) return t.name;
+        return GetPath(t.parent) + "/" + t.name;
     }
 }

@@ -22,7 +22,12 @@ namespace Antigravity.Recovery
             foreach (string path in paths)
             {
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                if (prefab == null) continue;
+                if (prefab == null) 
+                {
+                    Debug.LogError($"[FixPlayerVisuals] ERROR: Could not load prefab at path: {path}");
+                    continue;
+                }
+                Debug.Log($"[FixPlayerVisuals] Loaded {path} for processing...");
 
                 // Instantiate in edit mode
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
@@ -33,15 +38,18 @@ namespace Antigravity.Recovery
                     // 1. SPECIFIC TARGET: DEBUG_VISUAL_CAPSULE
                     // Based on logs, this is the exact name of the object causing issues.
                     var specificCapsule = instance.transform.Find("DEBUG_VISUAL_CAPSULE");
-                    if (specificCapsule != null && specificCapsule.gameObject.activeSelf)
+                    if (specificCapsule != null)
                     {
-                        Undo.RecordObject(specificCapsule.gameObject, "Hide Debug Cylinder");
-                        specificCapsule.gameObject.SetActive(false);
+                        Undo.RecordObject(instance, "Destroy Debug Cylinder");
+                        GameObject.DestroyImmediate(specificCapsule.gameObject, true); // TRUE = Allow destroying assets
                         modified = true;
-                        Debug.Log($"[FixPlayerVisuals] SUCCESS: Found and DISABLED 'DEBUG_VISUAL_CAPSULE' in {path}");
+                        Debug.Log($"[FixPlayerVisuals] SUCCESS: Terminated 'DEBUG_VISUAL_CAPSULE' in {path}");
                     }
                     else
                     {
+                        Debug.LogWarning($"[FixPlayerVisuals] 'DEBUG_VISUAL_CAPSULE' NOT found in {path}. Dumping children:");
+                        foreach(Transform child in instance.transform) Debug.Log($" - Child: {child.name}");
+
                         // 2. FALLBACK: Search for "Capsule" or "Debug" objects with MeshRenderers recursively
                         var renderers = instance.GetComponentsInChildren<MeshRenderer>(true);
                         foreach (var mr in renderers)

@@ -412,6 +412,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ff24004e2ad2a4195160397bfe1da3,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 9007353878078231383}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ff24004e2ad2a4195160397bfe1da3,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 311108206147650681}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ff24004e2ad2a4195160397bfe1da3,
         type: 3}
@@ -421,10 +425,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2624894804459353874}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ff24004e2ad2a4195160397bfe1da3,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9007353878078231383}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ff24004e2ad2a4195160397bfe1da3,
         type: 3}
       insertIndex: -1
@@ -458,6 +458,31 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6745032932376154443}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9007353878078231383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5862070875001105434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1257543471
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &311108206147650681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +515,9 @@ MonoBehaviour:
   thirdPersonHeight: 2
   survivorMeshRenderer: {fileID: 4192050191480631359}
   hideBodyInFirstPerson: 1
+  playerInventory: {fileID: 0}
+  objectHandler: {fileID: 0}
+  isStatic: 0
 --- !u!143 &4509582654957964983
 CharacterController:
   m_ObjectHideFlags: 0
@@ -537,31 +565,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &9007353878078231383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5862070875001105434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 0
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &7509803269120591283
 MonoBehaviour:
   m_ObjectHideFlags: 0

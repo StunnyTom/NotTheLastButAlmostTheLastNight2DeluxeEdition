@@ -12,10 +12,10 @@ public class ForcePlayerVis : NetworkBehaviour
 
         // 2. ALWAYS Create Instant Primitive (Debug Mode) to ensure visibility
         //    (Previously we skipped if a renderer existed, but maybe that renderer is invisible/broken)
-        GameObject debugVis = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        debugVis.transform.SetParent(transform, false);
-        debugVis.transform.localPosition = Vector3.up * 1.1f; // Slightly higher to see feet
-        debugVis.name = "DEBUG_VISUAL_CAPSULE";
+        // GameObject debugVis = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        // debugVis.transform.SetParent(transform, false);
+        // debugVis.transform.localPosition = Vector3.up * 1.1f; // Slightly higher to see feet
+        // debugVis.name = "DEBUG_VISUAL_CAPSULE";
         
         // 3. Force Layer to Default
         SetLayerRecursively(gameObject, 0); // 0 = Default layer
