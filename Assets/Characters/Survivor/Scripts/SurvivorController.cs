@@ -497,11 +497,8 @@ namespace SurvivorSystem
             if (scrollDelta != 0f)
             {
                 Inventory inv = GetInventory();
-                if (inv == null)
-                {
-                    Debug.LogWarning("Inventory reference is null. Assign 'playerInventory' in the inspector or ensure Inventory.Instance is initialized.");
-                    return;
-                }
+                // SILENTLY fail if inventory is missing (common in Lobby)
+                if (inv == null) return;
 
                 if (scrollDelta > 0f)
                     inv.NextItem();
