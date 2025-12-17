@@ -5123,7 +5123,7 @@ MonoBehaviour:
   leaveSessionBtn: {fileID: 51730007}
   lobbyPanel: {fileID: 0}
   joinSection: {fileID: 0}
-  playerListContent: {fileID: 313254895}
+  playerListContent: {fileID: 0}
   playerListEntryPrefab: {fileID: 0}
 --- !u!1 &1390933201
 GameObject:
