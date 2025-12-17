@@ -24,7 +24,11 @@ namespace SlimUI.ModernMenu{
 			message = gameObject;
 
 			if(isText){
-				message.GetComponent<TextMeshPro>().color = themeController.textColor;
+				// FIXED: Stop overriding color at runtime (it was making text invisible)
+				// message.GetComponent<TextMeshPro>().color = themeController.textColor;
+                // Try to handle UGUI too just in case 
+                // var tmp = message.GetComponent<TextMeshProUGUI>();
+                // if (tmp) tmp.color = Color.white;
 			}
 		}
 	}
