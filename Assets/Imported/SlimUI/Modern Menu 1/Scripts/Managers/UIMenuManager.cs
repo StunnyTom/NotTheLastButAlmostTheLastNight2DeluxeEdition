@@ -21,15 +21,46 @@ namespace SlimUI.ModernMenu{
         [Tooltip("Optional 4th Menu")]
         public GameObject extrasMenu;
 
+        [Header("CUSTOM SETTINGS")]
+        [Tooltip("The Custom Simple Settings Menu Object")]
+        public GameObject customSettingsMenu;
+
         public enum Theme {custom1, custom2, custom3};
         [Header("THEME SETTINGS")]
         public Theme theme;
-        private int themeIndex;
+        // private int themeIndex; // Unused
         public ThemedUIData themeController;
 
         [Header("PANELS")]
         [Tooltip("The UI Panel parenting all sub menus")]
         public GameObject mainCanvas;
+
+        // ... skipping lines to 99 ...
+
+		void SetThemeColors()
+		{
+			switch (theme)
+			{
+				case Theme.custom1:
+					themeController.currentColor = themeController.custom1.graphic1;
+					themeController.textColor = themeController.custom1.text1;
+					// themeIndex = 0;
+					break;
+				case Theme.custom2:
+					themeController.currentColor = themeController.custom2.graphic2;
+					themeController.textColor = themeController.custom2.text2;
+					// themeIndex = 1;
+					break;
+				case Theme.custom3:
+					themeController.currentColor = themeController.custom3.graphic3;
+					themeController.textColor = themeController.custom3.text3;
+					// themeIndex = 2;
+					break;
+				default:
+					Debug.Log("Invalid theme selected.");
+					break;
+			}
+		}
         [Tooltip("The UI Panel that holds the CONTROLS window tab")]
         public GameObject PanelControls;
         [Tooltip("The UI Panel that holds the VIDEO window tab")]
@@ -89,33 +120,10 @@ namespace SlimUI.ModernMenu{
 			firstMenu.SetActive(true);
 			mainMenu.SetActive(true);
 
-			SetThemeColors();
+			// SetThemeColors(); // DISABLE THEME OVERRIDE
 		}
 
-		void SetThemeColors()
-		{
-			switch (theme)
-			{
-				case Theme.custom1:
-					themeController.currentColor = themeController.custom1.graphic1;
-					themeController.textColor = themeController.custom1.text1;
-					themeIndex = 0;
-					break;
-				case Theme.custom2:
-					themeController.currentColor = themeController.custom2.graphic2;
-					themeController.textColor = themeController.custom2.text2;
-					themeIndex = 1;
-					break;
-				case Theme.custom3:
-					themeController.currentColor = themeController.custom3.graphic3;
-					themeController.textColor = themeController.custom3.text3;
-					themeIndex = 2;
-					break;
-				default:
-					Debug.Log("Invalid theme selected.");
-					break;
-			}
-		}
+
 
 		public void PlayCampaign(){
 			exitMenu.SetActive(false);
@@ -222,15 +230,15 @@ namespace SlimUI.ModernMenu{
 		}
 
 		public void PlayHover(){
-			hoverSound.Play();
+            if (hoverSound != null && hoverSound.gameObject.activeInHierarchy) hoverSound.Play();
 		}
 
 		public void PlaySFXHover(){
-			sliderSound.Play();
+            if (sliderSound != null && sliderSound.gameObject.activeInHierarchy) sliderSound.Play();
 		}
 
 		public void PlaySwoosh(){
-			swooshSound.Play();
+            if (swooshSound != null && swooshSound.gameObject.activeInHierarchy) swooshSound.Play();
 		}
 
 		// Are You Sure - Quit Panel Pop Up
@@ -247,11 +255,38 @@ namespace SlimUI.ModernMenu{
 			DisablePlayCampaign();
 		}
 
-		public void ExtrasMenu(){
+        public void ExtrasMenu(){
 			playMenu.SetActive(false);
 			if(extrasMenu) extrasMenu.SetActive(true);
 			exitMenu.SetActive(false);
 		}
+
+        public void OpenCustomSettings()
+        {
+            Debug.Log("OpenCustomSettings CALLED");
+            if (customSettingsMenu != null)
+            {
+                Debug.Log($"Switching to Custom Menu: {customSettingsMenu.name}");
+                mainMenu.SetActive(false);
+                customSettingsMenu.SetActive(true);
+                // Ensure it renders on top
+                customSettingsMenu.transform.SetAsLastSibling(); 
+            }
+            else
+            {
+                Debug.LogError("Custom Settings Menu reference is MISSING (Null) in UIMenuManager!");
+            }
+        }
+
+        public void CloseCustomSettings()
+        {
+            Debug.Log("CloseCustomSettings CALLED");
+            if (customSettingsMenu != null)
+            {
+                customSettingsMenu.SetActive(false);
+                mainMenu.SetActive(true);
+            }
+        }
 
 		public void QuitGame(){
 			#if UNITY_EDITOR

@@ -1,4 +1,6 @@
 using UnityEngine;
+using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
@@ -11,14 +13,16 @@ namespace SurvivorSystem
     /// Controller for Survivor players
     /// Based on MonsterController but without attack
     /// </summary>
-    public class SurvivorController : MonoBehaviour, IDamageable
+    public class SurvivorController : NetworkBehaviour, IDamageable
     {
+        // ... (Headers omitted for brevity, they remain unchanged) ...
+
         [Header("Movement Settings")]
-        [Range(0f, 20f)] public float walkSpeed = 3f;
-        [Range(0f, 30f)] public float sprintSpeed = 5f;
-        [Range(0f, 20f)] public float crouchSpeed = 1.5f;
-        [Range(0f, 15f)] public float jumpSpeed = 3f;
-        [Range(0f, 50f)] public float gravity = 9.81f;
+        [Range(0f, 20f)] public float walkSpeed = 6f; // Doubled
+        [Range(0f, 30f)] public float sprintSpeed = 10f; // Doubled
+        [Range(0f, 20f)] public float crouchSpeed = 3f; // Doubled
+        [Range(0f, 15f)] public float jumpSpeed = 6f; // Doubled
+        [Range(0f, 50f)] public float gravity = 20f; // Increased for snappier fall
 
         [Header("Look Settings")]
         [Range(0, 100)] public float mouseSensitivity = 50f;
@@ -89,6 +93,76 @@ namespace SurvivorSystem
             return Inventory.Instance;
         }
 
+        public override void OnNetworkSpawn()
+        {
+            if (!IsOwner)
+            {
+                // DISABLE REMOTE PLAYER
+                this.enabled = false;
+                if (playerCamera) playerCamera.gameObject.SetActive(false);
+                if (thirdPersonCamera) thirdPersonCamera.gameObject.SetActive(false);
+                var cams = GetComponentsInChildren<Camera>();
+                foreach (var c in cams) c.enabled = false;
+                var listener = GetComponentInChildren<AudioListener>();
+                if (listener) listener.enabled = false;
+                
+                Debug.Log($"[SurvivorController] Remote Player {OwnerClientId}: Disabled controls and cameras.");
+            }
+            else
+            {
+                // LOCAL PLAYER SETUP
+                SceneManager.sceneLoaded += OnSceneLoaded;
+                ConfigureControlsForScene();
+            }
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (IsOwner)
+            {
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+            }
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            ConfigureControlsForScene();
+        }
+
+        private void ConfigureControlsForScene()
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+            bool isLobby = sceneName.Contains("Lobby") || sceneName.Contains("Menu");
+
+            if (isLobby)
+            {
+                // LOBBY MODE: Cursor Free, No Movement, NO CAMERA (Prevent UI occlusion)
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                isLookEnabled = false;
+                isMoveEnabled = false;
+                
+                // Disable character cameras so they don't block the Main Menu
+                if (playerCamera) playerCamera.gameObject.SetActive(false);
+                if (thirdPersonCamera) thirdPersonCamera.gameObject.SetActive(false);
+
+                Debug.Log($"[SurvivorController] Local Player {OwnerClientId}: LOBBY MODE (Controls & Cameras Disabled)");
+            }
+            else
+            {
+                // GAME MODE: Cursor Locked, Movement Active, Camera Active
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                isLookEnabled = true;
+                isMoveEnabled = true;
+                
+                // Initialize Camera correctly based on isFirstPerson flag
+                ApplyCameraState();
+
+                Debug.Log($"[SurvivorController] Local Player {OwnerClientId}: GAME MODE (Controls Enabled, Cursor Locked)");
+            }
+        }
+
         void Awake()
         {
             characterController = GetComponent<CharacterController>();
@@ -104,8 +178,9 @@ namespace SurvivorSystem
             if (playerCamera != null)
                 cam = playerCamera.GetComponent<Camera>();
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            // REMOVED: Cursor locking moved to ConfigureControlsForScene
+            // Cursor.lockState = CursorLockMode.Locked; 
+            // Cursor.visible = false;
 
             rotX = transform.rotation.eulerAngles.y;
             rotY = playerCamera != null ? playerCamera.localRotation.eulerAngles.x : 0;
@@ -274,32 +349,7 @@ namespace SurvivorSystem
             if (Input.GetKeyDown(KeyCode.C))
             {
                 isFirstPerson = !isFirstPerson;
-
-                if (isFirstPerson)
-                {
-                    if (playerCamera != null)
-                        playerCamera.gameObject.SetActive(true);
-                    if (thirdPersonCamera != null)
-                        thirdPersonCamera.gameObject.SetActive(false);
-
-                    if (hideBodyInFirstPerson && survivorMeshRenderer != null)
-                        survivorMeshRenderer.enabled = false;
-                }
-                else
-                {
-                    if (playerCamera != null)
-                        playerCamera.gameObject.SetActive(false);
-                    if (thirdPersonCamera != null)
-                    {
-                        thirdPersonCamera.gameObject.SetActive(true);
-                        Vector3 offset = -transform.forward * thirdPersonDistance + Vector3.up * thirdPersonHeight;
-                        thirdPersonCamera.position = transform.position + offset;
-                        thirdPersonCamera.LookAt(transform.position + Vector3.up * 1.5f);
-                    }
-
-                    if (survivorMeshRenderer != null)
-                        survivorMeshRenderer.enabled = true;
-                }
+                ApplyCameraState();
             }
 
             if (!isFirstPerson && thirdPersonCamera != null)
@@ -309,6 +359,37 @@ namespace SurvivorSystem
                 thirdPersonCamera.LookAt(transform.position + Vector3.up * 1.5f);
             }
         }
+
+        private void ApplyCameraState()
+        {
+            if (isFirstPerson)
+            {
+                if (playerCamera != null)
+                    playerCamera.gameObject.SetActive(true);
+                if (thirdPersonCamera != null)
+                    thirdPersonCamera.gameObject.SetActive(false);
+
+                if (hideBodyInFirstPerson && survivorMeshRenderer != null)
+                    survivorMeshRenderer.enabled = false;
+            }
+            else
+            {
+                if (playerCamera != null)
+                    playerCamera.gameObject.SetActive(false);
+                if (thirdPersonCamera != null)
+                {
+                    thirdPersonCamera.gameObject.SetActive(true);
+                    Vector3 offset = -transform.forward * thirdPersonDistance + Vector3.up * thirdPersonHeight;
+                    thirdPersonCamera.position = transform.position + offset;
+                    thirdPersonCamera.LookAt(transform.position + Vector3.up * 1.5f);
+                }
+
+                if (survivorMeshRenderer != null)
+                    survivorMeshRenderer.enabled = true;
+            }
+        }
+
+
 
         public void SetControl(bool newState)
         {
