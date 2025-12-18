@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
@@ -54,6 +55,12 @@ namespace SurvivorSystem
         [Header("Secondary Objectives")]
         public float osRayDistance = 3f;
         [SerializeField] SimpleProgressBar progressBar;
+        
+        [Header("Night Vision")]
+        public float nightVisionTransitionSpeed = 0.2f;
+        private float nvTargetWeight = 0f;
+        public bool nightVisionUnlocked = false;
+        public Volume nightVisionVolume;
 
 
 
@@ -72,6 +79,7 @@ namespace SurvivorSystem
         // Look
         private float rotX, rotY;
         private float xVelocity, yVelocity;
+        private bool NVactive = false;
 
         // Control flags
         private bool isLookEnabled = true;
@@ -79,6 +87,7 @@ namespace SurvivorSystem
         private OutlineTarget currentOutlined;
         private bool isDead = false;
         private ElectricCabinetOS currentOS;
+        
 
         // Inventory helper
         private bool objectInHand = false;
@@ -211,7 +220,37 @@ namespace SurvivorSystem
                 HandleOutlineRaycast();
                 HandleChangeSelectedItem();
                 HandleSecondaryObjectiveRaycast();
+                HandleNightVision();
             }
+        
+        private void HandleNightVision()
+        {
+            // Smoothly update volume weight every frame
+            if (nightVisionVolume != null)
+            {
+                nightVisionVolume.weight = Mathf.Lerp(
+                    nightVisionVolume.weight,
+                    nvTargetWeight,
+                    Time.deltaTime * nightVisionTransitionSpeed
+                );
+            }
+
+            // Toggle with Right Mouse Button if unlocked
+            if (!nightVisionUnlocked) return;
+
+            bool togglePressed = false;
+            #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            if (Mouse.current != null)
+                togglePressed = Mouse.current.rightButton.wasPressedThisFrame;
+            #else
+            togglePressed = Input.GetMouseButtonDown(1);
+            #endif
+
+            if (!togglePressed) return;
+
+            NVactive = !NVactive;
+            nvTargetWeight = NVactive ? 1f : 0f;
+        }
 
         void HandleInteraction()
         {
