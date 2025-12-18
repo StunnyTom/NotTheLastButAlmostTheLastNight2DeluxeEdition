@@ -1,11 +1,13 @@
 using UnityEngine;
+using SurvivorSystem;
 
 // Simple pistol implementation using raycast
 public class GunItem : UsableItem
 {
     [Header("Gun Settings")]
-    public float fireRate = 0.25f;
-    public float range = 100f;
+    public float fireRate = 0.5f;
+    public float range = 50f;
+
     [Tooltip("Layers pouvant être touchés par le tir")]
     public LayerMask shootableLayer;
 
@@ -14,6 +16,13 @@ public class GunItem : UsableItem
     public int currentAmmo = 12;
 
     private float nextShootTime = 0f;
+    private SurvivorController owner;
+
+
+    public void setOwner(SurvivorController survivor)
+    {
+        owner = survivor;
+    }
 
     private Camera GetAimCamera()
     {
@@ -25,11 +34,17 @@ public class GunItem : UsableItem
         if (Time.time < nextShootTime)
             return;
 
-        if (currentAmmo <= 0)
+        if (owner == null)
             return;
 
+        if (owner.BulletCount <= 0)
+        {
+            Debug.Log("No ammo");
+            return;
+        }
+        
         nextShootTime = Time.time + fireRate;
-        currentAmmo--;
+        owner.AddBullet(-1);
 
         if (gameObject.activeInHierarchy)
             StartCoroutine(RecoilAnimation());

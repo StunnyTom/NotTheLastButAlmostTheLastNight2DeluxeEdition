@@ -83,6 +83,8 @@ namespace SurvivorSystem
         // Inventory helper
         private bool objectInHand = false;
         private UsableItem equippedItem = null;
+        private int bulletCount = 1;
+        public int BulletCount => bulletCount;
 
         // Ragdoll
         private Rigidbody[] ragdollRigidbodies;
@@ -480,6 +482,11 @@ namespace SurvivorSystem
                     {
                         Debug.Log("Item picked: " + item.itemName);
 
+                        if (item is GunItem gun)
+                        {
+                            gun.setOwner(this);
+                        }
+
                         if (!objectInHand)
                         {
                             // Seulement équiper si la main est vide !
@@ -598,6 +605,11 @@ namespace SurvivorSystem
                     pressurePlate.transform.rotation = Quaternion.identity;
                     pressurePlate.OnDroppedOrUsedByPlayer();
                     pressurePlate.RegisterRestingState(); // <-- IMPORTANT
+                }
+
+                if (removed is GunItem gun)
+                {
+                    gun.setOwner(null);
                 }
 
                 // Nettoyage visuel / état main
@@ -738,6 +750,18 @@ namespace SurvivorSystem
             // ACTIVE LE RAGDOLL
             SetRagdoll(true);
         }
+
+        public GunItem GetEquippedGun()
+        {
+            return equippedItem as GunItem;
+        }
+
+        public void AddBullet(int amount = 1)
+        {
+            bulletCount += amount;
+            Debug.Log($"[Ammo] Player now has {bulletCount} bullets");
+        }
+
 
 
     }

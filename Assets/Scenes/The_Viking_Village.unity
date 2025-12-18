@@ -37280,6 +37280,43 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 215a971f0f2e59047bf9b5991ec49964, type: 3}
+--- !u!84 &761242319
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterDepthMap
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 6
+  m_Width: 1024
+  m_Height: 1024
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_UseDynamicScaleExplicit: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1001 &762445498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39056,6 +39093,7 @@ Transform:
   m_Children:
   - {fileID: 6475624008814855678}
   - {fileID: 1030747125}
+  - {fileID: 3846100620435366479}
   - {fileID: 1157414752}
   m_Father: {fileID: 141537215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -44887,43 +44925,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 968943041}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &885031241
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: WaterDepthMap
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &889654766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57894,6 +57895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpawnerProgressionManager
   lampPlate: {fileID: 6475624008814855679}
   pressurePlate: {fileID: 1030747126}
+  ammoPlate: {fileID: 8905654155874849311}
 --- !u!1001 &1158009857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71777,43 +71779,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1453272833}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &1454164552
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: WaterDepthMap
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &1455558642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -98249,6 +98214,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2030085550}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2030169328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4946902946439727561, guid: 5b518331743c6f642b574c44d3407110,
+    type: 3}
+  m_PrefabInstance: {fileID: 2072134659322765190}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2030169332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030169328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3269724055
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &2030673660
 GameObject:
   m_ObjectHideFlags: 0
@@ -105025,17 +105021,17 @@ PrefabInstance:
     - target: {fileID: 5759328396302603123, guid: 5b518331743c6f642b574c44d3407110,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.16
+      value: -35.484
       objectReference: {fileID: 0}
     - target: {fileID: 5759328396302603123, guid: 5b518331743c6f642b574c44d3407110,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.83
+      value: 5.062
       objectReference: {fileID: 0}
     - target: {fileID: 5759328396302603123, guid: 5b518331743c6f642b574c44d3407110,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 37.42
+      value: 41.152
       objectReference: {fileID: 0}
     - target: {fileID: 5759328396302603123, guid: 5b518331743c6f642b574c44d3407110,
         type: 3}
@@ -105075,7 +105071,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4946902946439727561, guid: 5b518331743c6f642b574c44d3407110,
+        type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2030169332}
   m_SourcePrefab: {fileID: 100100000, guid: 5b518331743c6f642b574c44d3407110, type: 3}
 --- !u!1001 &2158674806023431708
 PrefabInstance:
@@ -105263,6 +105263,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4566429637000278397, guid: c0ddd209484513d47821eef04f5a8570,
     type: 3}
   m_PrefabInstance: {fileID: 7394592832744096714}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3846100620435366479 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6397968485872067085}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4098975283335051681
 PrefabInstance:
@@ -105480,6 +105486,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e387eda3ec7a20478fb5099670d8e0f, type: 3}
+--- !u!1001 &6397968485872067085
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 779558632}
+    m_Modifications:
+    - target: {fileID: 3180258934736408314, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_Name
+      value: AmmoSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -34.075
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.1641397
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 42.995
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.97884184
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.20461828
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 23.614
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425018387720963605, guid: 18a52e008f6317c459f7236b1fcf77c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18a52e008f6317c459f7236b1fcf77c1, type: 3}
 --- !u!4 &6475624008814855678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1631838281271595061, guid: e9156be3732c3ed46935cdf5aded8dbe,
@@ -105655,6 +105729,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9156be3732c3ed46935cdf5aded8dbe, type: 3}
+--- !u!114 &8905654155874849311 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4149454986524862004, guid: 18a52e008f6317c459f7236b1fcf77c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6397968485872067085}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb76ea7d535ce914ba9a07f0372c4e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmmoSpawnerPlate
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

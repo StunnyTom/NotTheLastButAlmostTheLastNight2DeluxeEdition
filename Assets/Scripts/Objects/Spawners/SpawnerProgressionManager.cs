@@ -5,6 +5,7 @@ public class SpawnerProgressionManager : MonoBehaviour
     [Header("Spawner Plates")]
     public ObjectSpawnerPlate lampPlate;
     public ObjectSpawnerPlate pressurePlate;
+    public AmmoSpawnerPlate ammoPlate;
 
     private int completedObjectives = 0;
 
@@ -12,6 +13,7 @@ public class SpawnerProgressionManager : MonoBehaviour
     {
         // Lampes disponibles dès le début
         lampPlate.Unlock();
+        ammoPlate.Unlock();
     }
 
     /// <summary>
