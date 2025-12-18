@@ -99,3 +99,12 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*Assets/_Recovery
 Assets/_Recovery/
 Assets/_Recovery/
+
+
+
+# --------------------------------------
+# Manually added ignores below this line
+# --------------------------------------
+
+
+Assets/Imported/Viking Village/
